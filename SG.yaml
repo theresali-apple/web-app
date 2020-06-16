@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  SG:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: !Join ["", ["Stack ", !Ref "AWS::StackId", " WebApp"]]
+      VpcId: !ImportValue webapp-vpcid
+      SecurityGroupIngress:
+        -
+          CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          ToPort: "80"
+          FromPort: "80"
+        -
+          CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          ToPort: "443"
+          FromPort: "443"
+      SecurityGroupEgress:
+        -
+          CidrIp: 0.0.0.0/0
+          ToPort: "-1"
+          IpProtocol: "-1"
+Outputs:
+  sgID:
+    Description: web app security group ID
+    Value: !Ref SG
+    Export: # added to export
+      Name: webapp-sgID

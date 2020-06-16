@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  cloudfrontdistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        CacheBehaviors:
+          - ViewerProtocolPolicy: redirect-to-https
+            PathPattern: /*
+            TargetOriginId: !ImportValue webappALB
+            ForwardedValues:
+              QueryString: false
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        Origins:
+          - Id: !ImportValue webappALB
+            DomainName: !ImportValue webappALBdns
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+         ForwardedValues:
+           QueryString: false
+         TargetOriginId: !ImportValue webappALB
+         ViewerProtocolPolicy: redirect-to-https
+      Tags:
+        - Key: name
+          Value: webapp
+
+Outputs:
+  CDN:
+    Description: CDN dns for access
+    Value: !GetAtt cloudfrontdistribution.DomainName
+

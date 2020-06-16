@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  TargetGroupName:
+    Type: String
+    Default: WebAppTargetGroup
+    Description: Target group name
+
+Resources:
+  targetgroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Ref TargetGroupName
+      Port: 80
+      Protocol: HTTP
+      Tags:
+        - Key: "name"
+          Value: "webapp"
+      TargetType: instance
+      VpcId: !ImportValue webapp-vpcid
+
+  webappALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: webappALB-theresa
+      Scheme: internet-facing
+      SecurityGroups:
+        - !ImportValue webapp-sgID
+      Subnets:
+        - !ImportValue webapp-publicA
+        - !ImportValue webapp-publicB
+      Tags:
+        - Key: name
+          Value: webapp
+      Type: application
+
+  webappALBlistener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref targetgroup
+          Type: forward
+      LoadBalancerArn: !Ref webappALB
+      Port: 80
+      Protocol: HTTP
+
+Outputs:
+  targetgroupARN:
+    Description: ARN of target group
+    Value: !Ref targetgroup
+    Export: # added to export
+      Name: targetgroupARN
+  webappALB:
+    Description: domain name of ALB
+    Value: !Ref webappALB
+    Export:
+      Name: webappALB
+  webappALBdns:
+    Description: DNS name of ALB
+    Value: !GetAtt webappALB.DNSName
+    Export:
+      Name: webappALBdns
+

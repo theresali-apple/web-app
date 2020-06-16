@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  ASGname:
+    Type: String
+    Default: webapp-autoscalinggroup-theresa
+    Description: Auto Scaling group name
+  ASGmaxSize:
+    Type: String
+    Default: 4
+    AllowedPattern: "(\\d{1})"
+    Description: Auto Scaling group max size
+  ASGminSize:
+    Type: String
+    Default: 1
+    AllowedPattern: "(\\d{1})"
+    Description: Auto Scaling group min size
+  ASGdesiredCapacity:
+    Type: String
+    Default: 1
+    AllowedPattern: "(\\d{1})"
+    Description: Auto Scaling group desired capacity
+  EnvironmentSize:
+    Type: String
+    Default: small
+    AllowedValues:
+      - small
+      - medium
+      - large
+    Description: Select Environment Size (S,M,L)
+  CPUPolicyTargetValue:
+    Type: String
+    Default: 50
+    Description: Dynamic adding or removing EC2 instances to keep average CPU usage to this target value
+
+Conditions:
+  ResourceSizeL: !Equals [!Ref EnvironmentSize, large]
+  ResourceSizeM: !Equals [!Ref EnvironmentSize, medium]
+
+Resources:
+  WebAppLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData:
+        InstanceType: !If [ResourceSizeL, t2.medium, !If [ResourceSizeM, t2.small, t2.micro]]
+        DisableApiTermination: 'true'
+        ImageId: ami-04fcc97b5f6edcd89
+        Monitoring:
+          Enabled: true
+        SecurityGroupIds:
+        - !ImportValue webapp-sgID
+        UserData:
+          "Fn::Base64":
+            !Sub |
+              #!/bin/bash
+              apt update
+              apt -y install nginx
+              systemctl enable nginx
+              systemctl start nginx
+              sed -i 's/Welcome to nginx/Hello World/g' /var/www/html/index.nginx-debian.html
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: !Ref ASGname
+      DesiredCapacity: !Ref ASGdesiredCapacity
+      LaunchTemplate:
+        LaunchTemplateId: !Ref WebAppLaunchTemplate
+        Version: !GetAtt WebAppLaunchTemplate.LatestVersionNumber
+      MaxSize: !Ref ASGmaxSize
+      MinSize: !Ref ASGminSize
+      Tags:
+        - Key: name
+          PropagateAtLaunch: true
+          Value: webapp
+      TargetGroupARNs:
+        - !ImportValue targetgroupARN
+      VPCZoneIdentifier:
+        - !ImportValue webapp-publicA
+        - !ImportValue webapp-publicB
+      MetricsCollection:
+        - Granularity: 1Minute
+
+  ASGpolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AutoScalingGroupName: !Ref ASG
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ASGAverageCPUUtilization
+        TargetValue: !Ref CPUPolicyTargetValue

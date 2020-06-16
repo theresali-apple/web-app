@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  VPCNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/webappvpc.yaml
+      Parameters:
+        vpccidr: 10.20.0.0/16
+        SubnetPublicAcidr: 10.20.0.0/22
+        SubnetPublicBcidr: 10.20.4.0/22
+        SubnetPrivateAcidr: 10.20.8.0/22
+        SubnetPrivateBcidr: 10.20.12.0/22
+
+  SGNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/SG.yaml
+    DependsOn: VPCNestedStack
+
+  TGNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/targetgroup.yaml
+      Parameters:
+        TargetGroupName: WebAppTargetGroup-theresa
+    DependsOn: SGNestedStack
+
+  ASGNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/webapp-ASG.yaml
+      Parameters:
+        ASGname: webapp-autoscalinggroup-theresa
+        ASGmaxSize: 4
+        ASGminSize: 1
+        ASGdesiredCapacity: 1
+        EnvironmentSize: small
+        CPUPolicyTargetValue: 50
+    DependsOn: TGNestedStack
+
+  CDNNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/cloudfront.yaml
+    DependsOn: ASGNestedStack
