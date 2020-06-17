@@ -33,7 +33,7 @@ Prerequisites:
    Last, attach the created policy to the new role.
 
 How:
-Please refer to the doc which with screenshot.
+Please refer to the doc Instruction.pdf which with screenshot.
 
 Before testing, you can lower the CPU threshold to 20% so that it is more sensitive to the stress testing.
 And adding port 22 to security group inbound rule, so that you can login to the instance.
@@ -44,4 +44,4 @@ then run: sudo stress --cpu 30 --timeout 3600
 You will soon receive cloudwatch alarm regarding CPU usage, then the instance number increased by the auto scaling, to maintain average CPU load to 20%.
 Once you stop running the stress, and the cloudwatch alarm cleared, the instance number will be back to 1. But this is not as sensitive as while scaling out, sometimes scaling in only happens 20 mins later when the average CPU usage is lower than 20% by observation.
 
-Test result is attached to another doc with screenshot.
+Test result is attached to another doc testresult.pdf with screenshot.
