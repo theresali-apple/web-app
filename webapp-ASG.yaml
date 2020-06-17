@@ -44,7 +44,6 @@ Resources:
         InstanceType: !If [ResourceSizeL, t2.medium, !If [ResourceSizeM, t2.small, t2.micro]]
         DisableApiTermination: 'true'
         ImageId: ami-04fcc97b5f6edcd89
-        KeyName: mywebappkey.pem
         Monitoring:
           Enabled: true
         SecurityGroupIds:
@@ -58,7 +57,6 @@ Resources:
               systemctl enable nginx
               systemctl start nginx
               sed -i 's/Welcome to nginx/Hello World/g' /var/www/html/index.nginx-debian.html
-              /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroup --region ap-southeast-2
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
 
   ASG:
@@ -82,10 +80,6 @@ Resources:
         - !ImportValue webapp-publicB
       MetricsCollection:
         - Granularity: 1Minute
-    CreationPolicy:
-        ResourceSignal:
-          Count: '1'
-          Timeout: PT15M
 
   ASGpolicy:
     Type: AWS::AutoScaling::ScalingPolicy

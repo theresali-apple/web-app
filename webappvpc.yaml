@@ -88,12 +88,12 @@ Resources:
   SubnetRouteTableAssociatePrivateA:
     Type: "AWS::EC2::SubnetRouteTableAssociation"
     Properties:
-      RouteTableId: !Ref RouteTablePrivate
+      RouteTableId: !Ref RouteTablePrivateA
       SubnetId: !Ref SubnetPrivateA
   SubnetRouteTableAssociatePrivateB:
     Type: "AWS::EC2::SubnetRouteTableAssociation"
     Properties:
-      RouteTableId: !Ref RouteTablePrivate
+      RouteTableId: !Ref RouteTablePrivateB
       SubnetId: !Ref SubnetPrivateB
   RouteDefaultPublic:
     Type: "AWS::EC2::Route"
