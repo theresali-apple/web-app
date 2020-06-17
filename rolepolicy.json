@@ -18,7 +18,7 @@
                 "cloudformation:GetStackPolicy",
                 "cloudformation:ListChangeSets",
                 "cloudformation:DescribeChangeSet",
-                "iam:ListRoles",
+                "iam:*",
                 "ec2:*",
                 "elasticloadbalancing:*",
                 "autoscaling:*",
