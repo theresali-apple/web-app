@@ -10,12 +10,12 @@ Cloud front can cache the web contents on edge location, so that it can speed up
 
 targetgroup.yaml:
 Provision application load balancer.
+The ALB is listening on port 80, you can specify port 443 to improve security, so that the communication channel between cloudfront and the ALB is encrypted as well. And the certificate can be aws managed again, and use r53 to be the domain registrar, so that aws can manage all SSL certificates for you.
 
 webapp-ASG.yaml:
 Provision auto scaling group which scales out or in EC2 instances number based on average CPU usage, and start up new instance to replace the faulty one when necessary. It provides scalability and reliability of the system.
 This stack enable the administrator to specify the environment size as well, small size provisons t2.micro instances, medium size provisions t2.small instances, while large size provisions t2.medium instances.
 The launch template uses ubuntu 18.04 image, and install nginx once the instances up, then modify the nginx default page a little bit to show the "Hello World" message.
-The ALB is listening on port 80, you can specify port 443 to improve security, so that the communication channel between cloudfront and the ALB is encrypted as well. And the certificate can be aws managed again, and use r53 to be the domain registrar, so that aws can manage all SSL certificates for you.
 
 SG.yaml:
 Provision security group, which allows 80 and 443 inbound traffic.
