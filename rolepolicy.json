@@ -1,0 +1,33 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1478055099000",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:GetTemplateSummary",
+                "cloudformation:CreateStack",
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStacks",
+                "cloudformation:UpdateStack",
+                "cloudformation:ListStacks",
+                "cloudformation:ListStackResources",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:GetTemplate",
+                "cloudformation:GetStackPolicy",
+                "cloudformation:ListChangeSets",
+                "cloudformation:DescribeChangeSet",
+                "iam:ListRoles",
+                "ec2:*",
+                "elasticloadbalancing:*",
+                "autoScalingGroup:*",
+                "autoscaling:*",
+                "cloudfront:*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}

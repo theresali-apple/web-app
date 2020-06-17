@@ -44,6 +44,7 @@ Resources:
         InstanceType: !If [ResourceSizeL, t2.medium, !If [ResourceSizeM, t2.small, t2.micro]]
         DisableApiTermination: 'true'
         ImageId: ami-04fcc97b5f6edcd89
+        KeyName: mywebappkey.pem
         Monitoring:
           Enabled: true
         SecurityGroupIds:
