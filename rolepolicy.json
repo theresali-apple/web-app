@@ -21,7 +21,6 @@
                 "iam:ListRoles",
                 "ec2:*",
                 "elasticloadbalancing:*",
-                "autoScalingGroup:*",
                 "autoscaling:*",
                 "cloudfront:*"
             ],
