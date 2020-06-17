@@ -1,5 +1,7 @@
 To serve a simple and static website, use cloudfront and S3 serving as origin is the easiest way, but since this solution doesn't meet the requirements, so here is my solution.
 
+Architecture as show in Web App Reference Architecture.pdf.
+
 rolepolicy.json:
 Define the role cloudformation is going to use to provision this stack.
 
