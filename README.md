@@ -27,13 +27,6 @@ Provision VPC, subnets, route tables, internet gateway and NAT gateway according
 This template takes reference from a tutorial session provided by Adrian Cantrill in Linux Academy.
 
 
-Prerequisites:
-1. You are in ap-southeast-2 region, otherwise, the template will throw errors as it cannot find any subnet meet requirements.
-2. You have created an IAM role with provided privileges (rolepolicy.json) for cloud formation to create all the resources.
-   Here is the steps on creating the required role -
-   IAM -> Roles -> Create role: trusted entity: AWS service, use case: cloudformation, then click on create policy and paste the contents in JSON tab.
-   Last, attach the created policy to the new role.
-
 How:
 Please refer to the doc Instruction.pdf which with step by step screenshots.
 

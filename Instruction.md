@@ -1,3 +1,11 @@
+Prerequisites:
+1. You are in ap-southeast-2 region, otherwise, the template will throw errors as it cannot find any subnet meet requirements.
+2. You have created an IAM role with provided privileges (rolepolicy.json) for cloud formation to create all the resources.
+   Here is the steps on creating the required role -
+   IAM -> Roles -> Create role: trusted entity: AWS service, use case: cloudformation, then click on create policy and paste the contents in JSON tab.
+   Last, attach the created policy to the new role.
+
+Create Stack:
 1. Create stack using the following S3 URL:
    https://webapp-theresa.s3-ap-southeast-2.amazonaws.com/main.yaml
    <img width="1393" alt="Screen Shot 2020-06-17 at 4 30 10 pm" src="https://user-images.githubusercontent.com/66954944/84863170-e2468e80-b0b7-11ea-8eb9-287d060bbe38.png">
