@@ -85,6 +85,16 @@ Resources:
     Properties:
       RouteTableId: !Ref RouteTablePublic
       SubnetId: !Ref SubnetPublicB
+  SubnetRouteTableAssociatePrivateA:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTablePrivate
+      SubnetId: !Ref SubnetPrivateA
+  SubnetRouteTableAssociatePrivateB:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTablePrivate
+      SubnetId: !Ref SubnetPrivateB
   RouteDefaultPublic:
     Type: "AWS::EC2::Route"
     DependsOn: GatewayAttach
