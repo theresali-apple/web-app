@@ -37,6 +37,7 @@ Please refer to the doc Instruction.pdf which with screenshot.
 
 Before testing, you can lower the CPU threshold to 20% so that it is more sensitive to the stress testing.
 And adding port 22 to security group inbound rule, so that you can login to the instance.
+
 Test scalability:
 Install stress on the instance: sudo apt install stress,
 then run: sudo stress --cpu 30 --timeout 3600
