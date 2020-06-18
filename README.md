@@ -3,7 +3,7 @@ To serve a simple and static website, use cloudfront and S3 serving as origin is
 **Architecture** as show in Architecture.pdf.
 
 # How to deploy:
-Please refer to the doc Instruction.pdf which with step by step screenshots.
+Please refer to the doc **Instruction.md** which with step by step screenshots.
 
 Before testing, you can lower the CPU threshold to 20% so that it is more sensitive to the stress testing.
 And adding port 22 to security group inbound rule, so that you can login to the instance.
